@@ -36,3 +36,7 @@ Capture these from the running Next.js app:
 - Full case/person/custody management screens.
 - Cryptographic signing of each custody event.
 - Read-only analytics and vector similarity search for evidence descriptions.
+
+## Implemented application surfaces
+
+The final Next.js app includes Overview, Cases, Evidence vault, Custody chain, Forensic tests, Audit log, and Admin-only Users screens. The API route handlers are backed by MySQL and MongoDB and enforce authentication, role permissions, and request validation.

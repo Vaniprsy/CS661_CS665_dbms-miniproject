@@ -86,3 +86,30 @@ The login route validates email/password with Zod, checks the active user in MyS
 - MongoDB audit writes are required for login and evidence creation.
 
 The original DML is retained in `PES2UG24CS661_PES2UG24CS665_DML_REVIEW2.sql` for academic query demonstrations.
+
+## Application screens and API
+
+After login, the Next.js interface provides:
+
+- Overview with live evidence metrics
+- Cases register
+- Evidence vault with register/delete controls
+- Custody-chain transfer history and transfer form
+- Forensic-test register and test form
+- Admin-only MongoDB audit-log view
+- Admin-only user/role view
+
+The corresponding authenticated endpoints are:
+
+```text
+GET/POST /api/evidence
+DELETE   /api/evidence/:id
+GET      /api/cases
+GET/POST /api/transfers
+GET/POST /api/forensic-tests
+GET      /api/audit-events
+GET      /api/users
+POST     /api/auth/login
+```
+
+The login, evidence, transfer, and forensic-test forms show explicit validation or authorization errors from the API.
