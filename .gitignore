@@ -1,0 +1,6 @@
+.env
+node_modules/
+.next/
+chainsecure.db
+__pycache__/
+*.zip
