@@ -14,3 +14,6 @@ export async function getSession() {
   try { return (await jwtVerify(token, secret)).payload as { id: number; name: string; role: Role }; } catch { return null; }
 }
 export function canWrite(role: Role) { return role === "Admin" || role === "Officer"; }
+export async function destroySession() {
+  (await cookies()).set("chainsecure_session", "", { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: 0, path: "/" });
+}
