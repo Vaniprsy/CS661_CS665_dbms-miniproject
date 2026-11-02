@@ -26,7 +26,7 @@ export async function GET() {
     FROM evidence e
     JOIN \`case\` c ON c.Case_ID = e.Case_ID
     JOIN evidence_category ec ON ec.Category_ID = e.Category_ID
-    JOIN app_user u ON u.User_ID = e.Collected_By
+    JOIN \`user\` u ON u.User_ID = e.Collected_By
     ORDER BY e.Evidence_ID DESC
   `);
   return NextResponse.json(rows);

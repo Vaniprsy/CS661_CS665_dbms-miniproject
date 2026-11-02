@@ -4,3 +4,5 @@ node_modules/
 chainsecure.db
 __pycache__/
 *.zip
+
+tsconfig.tsbuildinfo

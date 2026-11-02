@@ -14,7 +14,7 @@ Confirm with the section coordinator that no other team has the same title befor
 ## Architecture
 
 ```text
-Next.js 14 interface/API
+Next.js 16 interface/API
        │
        ├── MySQL: cases, evidence, users, tests, custody transfers
        ├── MongoDB: append-only audit_events collection
@@ -110,6 +110,17 @@ GET/POST /api/forensic-tests
 GET      /api/audit-events
 GET      /api/users
 POST     /api/auth/login
+POST     /api/auth/logout
+GET      /api/lookups            (dropdown data for forms)
+POST     /api/evidence/:id/verify (runs verify_chain_integrity)
 ```
 
 The login, evidence, transfer, and forensic-test forms show explicit validation or authorization errors from the API.
+
+## UI update
+
+- **Log out** button in the sidebar and top bar; clears the session cookie and writes a `LOGOUT` event to MongoDB.
+- Redesigned sidebar layout with light/dark theme, stat cards, status badges, search, loading skeletons, toasts, and a responsive mobile menu.
+- Forms open in a modal and use dropdowns (cases, categories, users, locations, evidence) instead of raw ID fields.
+- "Verify" action on evidence calls the MySQL `verify_chain_integrity()` function and marks the chain verified.
+- Delete uses a confirmation dialog instead of the browser prompt.

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS location (
   State VARCHAR(80) NOT NULL,
   Country VARCHAR(80) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS app_user (
+CREATE TABLE IF NOT EXISTS `user` (
   User_ID INT AUTO_INCREMENT PRIMARY KEY,
   Name VARCHAR(120) NOT NULL,
   Role ENUM('Admin','Officer','Forensic Officer') NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS evidence (
   Chain_Verified BOOLEAN NOT NULL DEFAULT TRUE,
   FOREIGN KEY (Case_ID) REFERENCES `case`(Case_ID),
   FOREIGN KEY (Category_ID) REFERENCES evidence_category(Category_ID),
-  FOREIGN KEY (Collected_By) REFERENCES app_user(User_ID),
+  FOREIGN KEY (Collected_By) REFERENCES `user`(User_ID),
   INDEX idx_evidence_status (Current_Status),
   INDEX idx_evidence_collected_date (Collected_Date)
 );
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS forensic_test (
   Result TEXT NOT NULL,
   Report_Path VARCHAR(255) NOT NULL,
   FOREIGN KEY (Evidence_ID) REFERENCES evidence(Evidence_ID) ON DELETE CASCADE,
-  FOREIGN KEY (Conducted_By) REFERENCES app_user(User_ID)
+  FOREIGN KEY (Conducted_By) REFERENCES `user`(User_ID)
 );
 CREATE TABLE IF NOT EXISTS custody_transfer (
   Transfer_ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -100,8 +100,8 @@ CREATE TABLE IF NOT EXISTS custody_transfer (
   Remarks VARCHAR(500) NOT NULL,
   UNIQUE KEY uq_evidence_transfer (Evidence_ID, Transfer_No),
   FOREIGN KEY (Evidence_ID) REFERENCES evidence(Evidence_ID) ON DELETE CASCADE,
-  FOREIGN KEY (From_User_ID) REFERENCES app_user(User_ID),
-  FOREIGN KEY (To_User_ID) REFERENCES app_user(User_ID),
+  FOREIGN KEY (From_User_ID) REFERENCES `user`(User_ID),
+  FOREIGN KEY (To_User_ID) REFERENCES `user`(User_ID),
   FOREIGN KEY (From_Location_ID) REFERENCES location(Location_ID),
   CHECK (Received_Time IS NULL OR Received_Time >= Transfer_DateTime),
   INDEX idx_transfer_datetime (Transfer_DateTime)

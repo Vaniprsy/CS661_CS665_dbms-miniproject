@@ -19,7 +19,7 @@ export async function GET() {
     SELECT ft.Test_ID, ft.Evidence_ID, ft.Test_Type, ft.Test_Date, ft.Result,
            ft.Report_Path, e.Description, u.Name AS Conducted_By
     FROM forensic_test ft JOIN evidence e ON e.Evidence_ID=ft.Evidence_ID
-    JOIN app_user u ON u.User_ID=ft.Conducted_By ORDER BY ft.Test_Date DESC
+    JOIN \`user\` u ON u.User_ID=ft.Conducted_By ORDER BY ft.Test_Date DESC
   `);
   return NextResponse.json(rows);
 }

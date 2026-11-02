@@ -20,7 +20,7 @@ export async function GET() {
     SELECT ct.Transfer_ID, ct.Evidence_ID, ct.Transfer_No, ct.Transfer_DateTime,
            ct.Received_Time, ct.Remarks, e.Description, u1.Name AS From_User, u2.Name AS To_User
     FROM custody_transfer ct JOIN evidence e ON e.Evidence_ID = ct.Evidence_ID
-    JOIN app_user u1 ON u1.User_ID = ct.From_User_ID JOIN app_user u2 ON u2.User_ID = ct.To_User_ID
+    JOIN \`user\` u1 ON u1.User_ID = ct.From_User_ID JOIN \`user\` u2 ON u2.User_ID = ct.To_User_ID
     ORDER BY ct.Transfer_DateTime DESC
   `);
   return NextResponse.json(rows);
@@ -32,7 +32,8 @@ export async function POST(request: Request) {
   if (!canWrite(session.role)) return NextResponse.json({ error: "Your role cannot log custody transfers" }, { status: 403 });
   const parsed = transferSchema.safeParse(await request.json());
   if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0]?.message || "Invalid input" }, { status: 400 });
-  const data = parsed.data;
+  const toSql = (v: string) => { const t = v.replace("T", " "); return t.length === 16 ? `${t}:00` : t; };
+  const data = { ...parsed.data, transferDateTime: toSql(parsed.data.transferDateTime), receivedTime: parsed.data.receivedTime ? toSql(parsed.data.receivedTime) : undefined };
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
